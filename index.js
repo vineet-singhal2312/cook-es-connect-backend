@@ -14,7 +14,7 @@ const { initializeDbConnection } = require("./db/db.connet");
 // const playlist = require("./routes/playlist.router");
 // const dislikedvideos = require("./routes/dislikedvideos.router");
 const signup = require("./routes/UsersignUp.route");
-// const login = require("./routes/userLogIn.route");
+const login = require("./routes/UserLogIn.route");
 // const authverify = require("./middlewares/auth.verify");
 
 app.use(cors());
@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 });
 3;
 app.use("/signup", signup);
-// app.use("/login", login);
+app.use("/login", login);
 // app.use("/videos", video);
 // app.use("/historyvideos", authverify, history);
 // app.use("/likedvideos", authverify, likedVideos);
