@@ -1,8 +1,16 @@
-const CreatePost = (userId, postTitle, postContent, Post, res) => {
-  const newPost = new Post({
+const CreatePost = async (
+  userId,
+  postTitle,
+  postContent,
+  imageUrl,
+  collection,
+  res
+) => {
+  const newPost = new collection({
     userId,
     postTitle,
     postContent,
+    imageUrl,
     likes: [],
     dislikes: [],
     hearts: [],
@@ -12,9 +20,10 @@ const CreatePost = (userId, postTitle, postContent, Post, res) => {
 
   await newPost.save();
 
-  await Post.find({ userId })
+  await collection
+    .find({ userId })
     .populate("userId")
-    .populate("likel")
+    .populate("likes")
     .populate("dislikes")
     .populate("hearts")
     .populate("claps")
@@ -39,11 +48,11 @@ const CreatePost = (userId, postTitle, postContent, Post, res) => {
   //   return res.status(200).json({ success: true, message: `data post`, result });
 };
 
-modules.export = { CreatePost };
+module.exports = { CreatePost };
 
-OrderModel.find()
-  .populate("user")
-  .populate("meal")
-  .exec(function (err, results) {
-    // callback
-  });
+// OrderModel.find()
+//   .populate("user")
+//   .populate("meal")
+//   .exec(function (err, results) {
+//     // callback
+//   });

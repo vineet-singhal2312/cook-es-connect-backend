@@ -12,6 +12,9 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  imageUrl: {
+    type: String,
+  },
 
   likes: [
     {
@@ -44,6 +47,8 @@ const postSchema = new mongoose.Schema({
       ref: "User-sign-up",
     },
   ],
+
+  date: { type: Date, default: Date.now },
 });
 
 const Post = new mongoose.model("Post", postSchema);
