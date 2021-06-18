@@ -1,22 +1,37 @@
 const { userSignUp } = require("../model/UserSignUp.model");
 const bcrypt = require("bcrypt");
 
-const bcryptPasswordGenerator = (password, userName, email, res) => {
+const bcryptPasswordGenerator = (
+  password,
+  userName,
+  email,
+  profilePictureImageUrl,
+  res
+) => {
   bcrypt.hash(password, 10, function (err, bcryptPassword) {
     if (err) {
       res.status(403).json({ message: "something is wrong" });
     } else {
-      saveUser(bcryptPassword, userName, email, res);
+      saveUser(bcryptPassword, userName, email, profilePictureImageUrl, res);
     }
   });
 };
 
-const saveUser = async (bcryptPassword, userName, email, res) => {
+const saveUser = async (
+  bcryptPassword,
+  userName,
+  email,
+  profilePictureImageUrl,
+  res
+) => {
+  console.log(bcryptPassword, userName, email, profilePictureImageUrl);
+
   try {
     const newUser = new userSignUp({
       userName: userName,
       email: email,
       password: bcryptPassword,
+      profilePictureImageUrl: profilePictureImageUrl,
     });
     await newUser.save();
 

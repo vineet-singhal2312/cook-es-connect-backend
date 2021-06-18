@@ -23,6 +23,8 @@ router
           user[0]._id,
           user[0].email,
           user[0].userName,
+          user[0].profilePictureImageUrl,
+
           res
         );
       } else {

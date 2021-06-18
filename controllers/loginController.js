@@ -7,6 +7,7 @@ const passwordAuthentication = (
   id,
   email,
   name,
+  profilePictureImageUrl,
   res
 ) => {
   bcrypt.compare(password, userPassword, function (err, result) {
@@ -28,6 +29,7 @@ const passwordAuthentication = (
         message: "login successful",
         token,
         userName: name,
+        profilePictureImageUrl,
       });
     } else {
       return res.status(400).json({ message: "authentication failed" });

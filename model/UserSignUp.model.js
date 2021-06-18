@@ -21,6 +21,10 @@ const userSignUpSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  profilePictureImageUrl: {
+    type: String,
+    required: true,
+  },
 });
 
 const userSignUp = new mongoose.model("User-sign-up", userSignUpSchema);
