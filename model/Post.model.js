@@ -47,6 +47,16 @@ const postSchema = new mongoose.Schema({
       ref: "User-sign-up",
     },
   ],
+  comments: [
+    {
+      userId: { type: Schema.Types.ObjectId, ref: "User-sign-up" },
+
+      comment: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 
   date: { type: Date, default: Date.now },
 });

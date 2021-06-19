@@ -10,7 +10,7 @@ const bcryptPasswordGenerator = (
 ) => {
   bcrypt.hash(password, 10, function (err, bcryptPassword) {
     if (err) {
-      res.status(403).json({ message: "something is wrong" });
+      res.status(400).json({ message: "something is wrong" });
     } else {
       saveUser(bcryptPassword, userName, email, profilePictureImageUrl, res);
     }
@@ -40,7 +40,7 @@ const saveUser = async (
       .json({ success: true, message: "Your registration is successful" });
   } catch (error) {
     res
-      .status(403)
+      .status(400)
       .json({ success: false, message: "something is wrong in saving user" });
   }
 };
