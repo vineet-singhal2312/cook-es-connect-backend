@@ -48,21 +48,7 @@ router
   });
 router
   .route("/timeline")
-  //   .get(async (req, res) => {
-  //     const { userId } = req.user;
 
-  //     try {
-  //       const result = await UserSignUp.find({ _id: userId });
-  //       console.log(result);
-  //       res.status(200).json({
-  //         success: true,
-  //         message: "task done",
-  //         result,
-  //       });
-  //     } catch (error) {
-  //       res.status(404).send({ success: false, message: "error!!!" });
-  //     }
-  //   })
   .post(async (req, res) => {
     const { timelineImageUrl } = req.body;
     const { userId } = req.user;

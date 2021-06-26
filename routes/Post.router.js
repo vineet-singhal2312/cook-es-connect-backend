@@ -11,6 +11,7 @@ const {
 } = require("../controllers/postController");
 const { sendData } = require("../controllers/sendData");
 const { Post } = require("../model/Post.model");
+const { UserSignUp } = require("../model/UserSignUp.model");
 const router = express.Router();
 
 router
@@ -18,34 +19,14 @@ router
   .get(async (req, res) => {
     const { userId } = req.user;
 
-    // await Post.find({})
-    //   .populate("userId")
-    //   .populate("likes")
-    //   .populate("dislikes")
-    //   .populate("hearts")
-    //   .populate("claps")
-    //   .populate("laughs")
-    //   .populate({
-    //     path: "comments.userId",
-    //     model: "User-sign-up",
-    //   })
-    //   .exec(function (err, results) {
-    //     if (err) {
-    //       return res.status(404).json({
-    //         success: false,
-    //         message: "something is wrong in fetching data",
-    //       });
-    //     }
-    //     if (results) {
-    //       return res.status(200).json({
-    //         success: true,
-    //         message: "task done",
-    //         results,
-    //       });
-    //     }
-    //   });
-
-    await sendData({}, Post, res);
+    const user = await UserSignUp.find({ _id: userId });
+    const following = user[0].following;
+    console.log(following);
+    await sendData(
+      { $or: [{ userId }, { userId: { $in: following } }] },
+      Post,
+      res
+    );
     // try {
     // } catch (error) {
     //   res.status(404).send({ success: false, message: "error!!!" });

@@ -1,4 +1,7 @@
 const express = require("express");
+const {
+  createFollowNotification,
+} = require("../controllers/notificationController");
 const { sendData } = require("../controllers/sendData");
 
 const { Post } = require("../model/Post.model");
@@ -47,8 +50,13 @@ router
       await UserSignUp.findByIdAndUpdate(userId, {
         $push: { following: searchedUserId },
       });
+      await createFollowNotification({
+        sourceUserId: userId,
+        targetUserId: searchedUserId,
+      });
+
       const result = await UserSignUp.find({ _id: searchedUserId });
-      console.log(result);
+      console.log({ result });
       res.status(200).json({
         success: true,
         message: "task done",
