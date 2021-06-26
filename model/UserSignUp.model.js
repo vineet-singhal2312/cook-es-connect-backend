@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const userSignUpSchema = new mongoose.Schema({
+const UserSignUpSchema = new mongoose.Schema({
   userName: {
     type: String,
     required: true,
@@ -25,8 +25,24 @@ const userSignUpSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  timeLinePhoto: {
+    type: String,
+  },
+  followers: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User-sign-up",
+      unique: true,
+    },
+  ],
+  following: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User-sign-up",
+    },
+  ],
 });
 
-const userSignUp = new mongoose.model("User-sign-up", userSignUpSchema);
+const UserSignUp = new mongoose.model("User-sign-up", UserSignUpSchema);
 
-module.exports = { userSignUp };
+module.exports = { UserSignUp };

@@ -30,6 +30,7 @@ const passwordAuthentication = (
         token,
         userName: name,
         profilePictureImageUrl,
+        id,
       });
     } else {
       return res.status(400).json({ message: "authentication failed" });

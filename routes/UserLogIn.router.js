@@ -1,5 +1,5 @@
 const express = require("express");
-const { userSignUp } = require("../model/UserSignUp.model");
+const { UserSignUp } = require("../model/UserSignUp.model");
 const { passwordAuthentication } = require("../controllers/loginController");
 
 const app = express();
@@ -11,8 +11,7 @@ router
   .post(async (req, res) => {
     try {
       const { email, password } = req.body;
-
-      const user = await userSignUp.find({ email }).exec();
+      const user = await UserSignUp.find({ email }).exec();
       console.log({ user });
       console.log(user[0].userName);
 

@@ -6,13 +6,16 @@ const port = process.env.PORT || 8000;
 const cors = require("cors");
 const mongoose = require("mongoose");
 app.use(express.json());
-const { initializeDbConnection } = require("./db/db.connet");
+const { initializeDbConnection } = require("./db/db.connect");
 
-const signup = require("./routes/UsersignUp.route");
-const login = require("./routes/UserLogIn.route");
+const signup = require("./routes/UsersignUp.router");
+const login = require("./routes/UserLogIn.router");
 const post = require("./routes/Post.router");
+const profile = require("./routes/Profile.router");
+const searchedProfile = require("./routes/SearchedProfile.router");
+const notification = require("./routes/Notification.route");
 
-const authverify = require("./middlewares/auth.verify");
+const authVerify = require("./middlewares/auth.verify");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -25,7 +28,11 @@ app.get("/", (req, res) => {
 
 app.use("/signup", signup);
 app.use("/login", login);
-app.use("/posts", authverify, post);
+app.use("/posts", authVerify, post);
+app.use("/profile", authVerify, profile);
+app.use("/searched-profile", authVerify, searchedProfile);
+app.use("/notifications", authVerify, notification);
+
 // app.use("/historyvideos", authverify, history);
 // app.use("/likedvideos", authverify, likedVideos);
 // app.use("/watchlatervideos", authverify, watchLater);

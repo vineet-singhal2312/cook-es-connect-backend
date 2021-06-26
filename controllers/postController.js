@@ -22,7 +22,7 @@ const CreatePost = async (
     await newPost.save();
 
     await collection
-      .find({ userId })
+      .find({})
       .populate("userId")
       .populate("likes")
       .populate("dislikes")
@@ -70,7 +70,7 @@ const AddReactionOnPost = async (
     });
 
     await collection
-      .find({ userId })
+      .find({})
       .populate("userId")
       .populate("likes")
       .populate("dislikes")
@@ -116,7 +116,7 @@ const DeleteReactionFromPost = async (
     });
 
     await collection
-      .find({ userId })
+      .find({})
       .populate("userId")
       .populate("likes")
       .populate("dislikes")
@@ -171,7 +171,7 @@ const AddCommentOnPost = async (
     }
 
     await collection
-      .find({ userId })
+      .find({})
       .populate("userId")
       .populate("likes")
       .populate("dislikes")
@@ -203,9 +203,65 @@ const AddCommentOnPost = async (
   }
 };
 
+const DeleteCommentFromPost = async (
+  userId,
+  postId,
+  commentId,
+  collection,
+  res
+) => {
+  try {
+    console.log(userId, postId, commentId, "delete kringe aaj comment");
+    // const user = await collection.find({ userId });
+    try {
+      console.log("main kaam pr hoon");
+
+      await collection.updateOne(
+        { _id: postId },
+        { $pull: { comments: { _id: commentId } } },
+        { safe: true, multi: true }
+      );
+      console.log("main kaam tamam");
+    } catch (error) {
+      console.log(error);
+    }
+
+    await collection
+      .find({})
+      .populate("userId")
+      .populate("likes")
+      .populate("dislikes")
+      .populate("hearts")
+      .populate("claps")
+      .populate("laughs")
+      .populate({
+        path: "comments.userId",
+        model: "User-sign-up",
+      })
+      .exec(function (err, results) {
+        if (err) {
+          return res.status.json({
+            success: false,
+            message: "something is wrong in fetching data",
+          });
+        }
+        if (results) {
+          return res.status(200).json({
+            success: true,
+            message: "task done",
+            results,
+          });
+        }
+      });
+  } catch (error) {
+    res.status(404).send({ success: false, message: "error" });
+  }
+};
+
 module.exports = {
   CreatePost,
   AddReactionOnPost,
   DeleteReactionFromPost,
   AddCommentOnPost,
+  DeleteCommentFromPost,
 };

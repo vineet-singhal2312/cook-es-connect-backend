@@ -1,10 +1,15 @@
 const express = require("express");
 const {
+  createReactionNotification,
+} = require("../controllers/notificationController");
+const {
   CreatePost,
   AddReactionOnPost,
   DeleteReactionFromPost,
   AddCommentOnPost,
+  DeleteCommentFromPost,
 } = require("../controllers/postController");
+const { sendData } = require("../controllers/sendData");
 const { Post } = require("../model/Post.model");
 const router = express.Router();
 
@@ -13,36 +18,38 @@ router
   .get(async (req, res) => {
     const { userId } = req.user;
 
-    await Post.find({})
-      .populate("userId")
-      .populate("likes")
-      .populate("dislikes")
-      .populate("hearts")
-      .populate("claps")
-      .populate("laughs")
-      .populate({
-        path: "comments.userId",
-        model: "User-sign-up",
-      })
-      .exec(function (err, results) {
-        if (err) {
-          return res.status(404).json({
-            success: false,
-            message: "something is wrong in fetching data",
-          });
-        }
-        if (results) {
-          return res.status(200).json({
-            success: true,
-            message: "task done",
-            results,
-          });
-        }
-      });
-    try {
-    } catch (error) {
-      res.status(404).send({ success: false, message: "error!!!" });
-    }
+    // await Post.find({})
+    //   .populate("userId")
+    //   .populate("likes")
+    //   .populate("dislikes")
+    //   .populate("hearts")
+    //   .populate("claps")
+    //   .populate("laughs")
+    //   .populate({
+    //     path: "comments.userId",
+    //     model: "User-sign-up",
+    //   })
+    //   .exec(function (err, results) {
+    //     if (err) {
+    //       return res.status(404).json({
+    //         success: false,
+    //         message: "something is wrong in fetching data",
+    //       });
+    //     }
+    //     if (results) {
+    //       return res.status(200).json({
+    //         success: true,
+    //         message: "task done",
+    //         results,
+    //       });
+    //     }
+    //   });
+
+    await sendData({}, Post, res);
+    // try {
+    // } catch (error) {
+    //   res.status(404).send({ success: false, message: "error!!!" });
+    // }
   })
   .post(async (req, res) => {
     const { postTitle, postCaption, imageUrl } = req.body;
@@ -57,9 +64,12 @@ router
     const { postId } = req.body;
     const { userId } = req.user;
 
-    console.log(userId, postId);
-
+    const post = await Post.find({ _id: postId });
+    const targetUserId = post[0].userId;
+    // console.log(userId, postId);
+    // console.log(post[0].userId);
     await AddReactionOnPost(userId, postId, { likes: userId }, Post, res);
+    await createReactionNotification(userId, targetUserId, postId, "liked");
   })
   .delete(async (req, res) => {
     const { postId } = req.body;
@@ -75,7 +85,10 @@ router
   .post(async (req, res) => {
     const { postId } = req.body;
     const { userId } = req.user;
+    const post = await Post.find({ _id: postId });
+    const targetUserId = post[0].userId;
     await AddReactionOnPost(userId, postId, { dislikes: userId }, Post, res);
+    await createReactionNotification(userId, targetUserId, postId, "disliked");
   })
   .delete(async (req, res) => {
     const { postId } = req.body;
@@ -97,8 +110,15 @@ router
   .post(async (req, res) => {
     const { postId } = req.body;
     const { userId } = req.user;
-
+    const post = await Post.find({ _id: postId });
+    const targetUserId = post[0].userId;
     await AddReactionOnPost(userId, postId, { hearts: userId }, Post, res);
+    await createReactionNotification(
+      userId,
+      targetUserId,
+      postId,
+      "reacted on"
+    );
   })
   .delete(async (req, res) => {
     const { postId } = req.body;
@@ -113,8 +133,15 @@ router
   .post(async (req, res) => {
     const { postId } = req.body;
     const { userId } = req.user;
-
+    const post = await Post.find({ _id: postId });
+    const targetUserId = post[0].userId;
     await AddReactionOnPost(userId, postId, { claps: userId }, Post, res);
+    await createReactionNotification(
+      userId,
+      targetUserId,
+      postId,
+      "reacted on"
+    );
   })
   .delete(async (req, res) => {
     const { postId } = req.body;
@@ -129,8 +156,15 @@ router
   .post(async (req, res) => {
     const { postId } = req.body;
     const { userId } = req.user;
-
+    const post = await Post.find({ _id: postId });
+    const targetUserId = post[0].userId;
     await AddReactionOnPost(userId, postId, { laughs: userId }, Post, res);
+    await createReactionNotification(
+      userId,
+      targetUserId,
+      postId,
+      "reacted on"
+    );
   })
   .delete(async (req, res) => {
     const { postId } = req.body;
@@ -144,14 +178,21 @@ router
   .post(async (req, res) => {
     const { postId, userComment } = req.body;
     const { userId } = req.user;
-
+    const post = await Post.find({ _id: postId });
+    const targetUserId = post[0].userId;
     await AddCommentOnPost(userId, postId, userComment, Post, res);
+    await createReactionNotification(
+      userId,
+      targetUserId,
+      postId,
+      "commented on"
+    );
   })
   .delete(async (req, res) => {
-    const { postId } = req.body;
+    const { postId, commentId } = req.body;
     const { userId } = req.user;
 
-    await DeleteReactionFromPost(userId, postId, { laughs: userId }, Post, res);
+    await DeleteCommentFromPost(userId, postId, commentId, Post, res);
   });
 
 module.exports = router;

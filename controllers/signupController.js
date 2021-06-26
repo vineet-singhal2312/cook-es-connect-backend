@@ -1,4 +1,4 @@
-const { userSignUp } = require("../model/UserSignUp.model");
+const { UserSignUp } = require("../model/UserSignUp.model");
 const bcrypt = require("bcrypt");
 
 const bcryptPasswordGenerator = (
@@ -27,11 +27,13 @@ const saveUser = async (
   console.log(bcryptPassword, userName, email, profilePictureImageUrl);
 
   try {
-    const newUser = new userSignUp({
+    const newUser = new UserSignUp({
       userName: userName,
       email: email,
       password: bcryptPassword,
       profilePictureImageUrl: profilePictureImageUrl,
+      timeLinePhoto:
+        "https://res.cloudinary.com/dxlube6si/image/upload/v1624519526/kxrwldihjw1ix0mlwtk6.jpg",
     });
     await newUser.save();
 
