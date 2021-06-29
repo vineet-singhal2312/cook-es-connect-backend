@@ -30,7 +30,7 @@ router
         res.status(400).json({ message: "check your email or password" });
       }
     } catch (error) {
-      res.status(404).send({ message: "error" });
+      res.status(400).send({ message: "error" });
     }
   });
 

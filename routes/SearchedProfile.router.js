@@ -3,6 +3,7 @@ const {
   createFollowNotification,
 } = require("../controllers/notificationController");
 const { sendData } = require("../controllers/sendData");
+const { Notification } = require("../model/Notification.model");
 
 const { Post } = require("../model/Post.model");
 const { UserSignUp } = require("../model/UserSignUp.model");
@@ -84,8 +85,31 @@ router
         message: "task done",
         result,
       });
+      await Notification.remove({
+        targetUserId: searchedUserId,
+        sourceUserId: userId,
+        type: "follow",
+      });
     } catch (error) {
       res.status(404).send({ success: false, message: "error!!!" });
     }
   });
+router.route("/users/:searchedUserName").get(async (req, res) => {
+  // const { userId } = req.user;
+  const { searchedUserName } = req.params;
+  console.log(searchedUserName);
+  try {
+    const results = await UserSignUp.find({
+      userName: { $regex: searchedUserName, $options: "i" },
+    });
+    console.log(results);
+    res.status(200).json({
+      success: true,
+      message: "task done",
+      results,
+    });
+  } catch (error) {
+    res.status(404).send({ success: false, message: "error!!!" });
+  }
+});
 module.exports = router;
