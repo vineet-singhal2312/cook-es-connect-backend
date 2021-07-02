@@ -6,12 +6,7 @@ const createReactionNotification = async (
   postId,
   reaction
 ) => {
-  console.log("request createReactionNotification");
-  console.log(sourceUserId);
-  console.log(targetUserId);
-
   if (sourceUserId == targetUserId) {
-    console.log("request reject");
     return null;
   }
   const newLikeNotification = new Notification({
@@ -25,12 +20,7 @@ const createReactionNotification = async (
 };
 
 const createFollowNotification = async ({ sourceUserId, targetUserId }) => {
-  console.log("request createReactionNotification");
-  // console.log(sourceUserId);
-  // console.log(targetUserId);
-
   if (sourceUserId == targetUserId) {
-    console.log("request reject");
     return null;
   }
   const newFollowNotification = new Notification({

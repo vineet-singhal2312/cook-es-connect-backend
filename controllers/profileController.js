@@ -8,8 +8,6 @@ const ProfileUpdate = async (userId, updateToBeBody, collection, res) => {
       message: "task done",
       result,
     });
-
-    console.log("post bhi chalta hai!!");
   } catch (error) {
     console.log(error);
     res.status(406).send({ success: false, message: "error!!!" });

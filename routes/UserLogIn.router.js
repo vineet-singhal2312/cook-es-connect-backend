@@ -12,8 +12,6 @@ router
     try {
       const { email, password } = req.body;
       const user = await UserSignUp.find({ email }).exec();
-      console.log({ user });
-      console.log(user[0].userName);
 
       if (user.length) {
         passwordAuthentication(

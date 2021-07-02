@@ -12,6 +12,7 @@ const sendData = async (requestedBody, collection, res) => {
         path: "comments.userId",
         model: "User-sign-up",
       })
+      .sort({ createdAt: "descending" })
       .exec(function (err, results) {
         if (err) {
           return res.status.json({
@@ -27,7 +28,6 @@ const sendData = async (requestedBody, collection, res) => {
           });
         }
       });
-    console.log("post bhi chalta hai!!");
   } catch (error) {
     console.log(error);
     res.status(404).send({ success: false, message: "error!!!" });

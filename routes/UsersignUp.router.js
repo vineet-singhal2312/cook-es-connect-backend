@@ -19,14 +19,6 @@ router
       if (password !== confirmPassword) {
         res.status(400).json({ message: "Both password are not same!!" });
       } else {
-        // console.log(
-        //   userName,
-        //   email,
-        //   password,
-        //   confirmPassword,
-        //   profilePictureImageUrl
-        // );
-
         bcryptPasswordGenerator(
           password,
           userName,

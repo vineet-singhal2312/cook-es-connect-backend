@@ -21,16 +21,11 @@ router
 
     const user = await UserSignUp.find({ _id: userId });
     const following = user[0].following;
-    console.log(following);
     await sendData(
       { $or: [{ userId }, { userId: { $in: following } }] },
       Post,
       res
     );
-    // try {
-    // } catch (error) {
-    //   res.status(404).send({ success: false, message: "error!!!" });
-    // }
   })
   .post(async (req, res) => {
     const { postTitle, postCaption, imageUrl } = req.body;
@@ -47,8 +42,7 @@ router
 
     const post = await Post.find({ _id: postId });
     const targetUserId = post[0].userId;
-    // console.log(userId, postId);
-    // console.log(post[0].userId);
+
     await AddReactionOnPost(userId, postId, { likes: userId }, Post, res);
     await createReactionNotification(userId, targetUserId, postId, "liked");
   })
@@ -56,7 +50,6 @@ router
     const { postId } = req.body;
     const { userId } = req.user;
 
-    console.log(postId, userId);
     await DeleteReactionFromPost(userId, postId, { likes: userId }, Post, res);
   });
 

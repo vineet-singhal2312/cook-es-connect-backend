@@ -40,11 +40,6 @@ router
       UserSignUp,
       res
     );
-    // res.status(200).json({
-    //   success: true,
-    //   message: "task done",
-    //   result,
-    // });
   });
 router
   .route("/timeline")
@@ -61,7 +56,6 @@ router
       UserSignUp,
       res
     );
-    // await CreatePost(userId, postTitle, postCaption, imageUrl, Post, res);
   });
 
 router.route("/posts").get(async (req, res) => {

@@ -33,12 +33,6 @@ app.use("/profile", authVerify, profile);
 app.use("/searched-profile", authVerify, searchedProfile);
 app.use("/notifications", authVerify, notification);
 
-// app.use("/historyvideos", authverify, history);
-// app.use("/likedvideos", authverify, likedVideos);
-// app.use("/watchlatervideos", authverify, watchLater);
-// app.use("/playlists", authverify, playlist);
-// app.use("/dislikedvideos", authverify, dislikedvideos);
-
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
