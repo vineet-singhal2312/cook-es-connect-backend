@@ -1,7 +1,4 @@
 const express = require("express");
-const { sendData } = require("../controllers/sendData");
-
-const { Post } = require("../model/Post.model");
 const { Notification } = require("../model/Notification.model");
 const router = express.Router();
 

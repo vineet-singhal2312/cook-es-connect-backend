@@ -18,7 +18,6 @@ router
   .route("/")
   .get(async (req, res) => {
     const { userId } = req.user;
-
     const user = await UserSignUp.find({ _id: userId });
     const following = user[0].following;
     await sendData(
@@ -39,7 +38,6 @@ router
   .post(async (req, res) => {
     const { postId } = req.body;
     const { userId } = req.user;
-
     const post = await Post.find({ _id: postId });
     const targetUserId = post[0].userId;
 
@@ -68,7 +66,6 @@ router
     const { postId } = req.body;
     const { userId } = req.user;
 
-  
     await DeleteReactionFromPost(
       userId,
       postId,

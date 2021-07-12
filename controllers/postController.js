@@ -1,3 +1,4 @@
+const { UserSignUp } = require("../model/UserSignUp.model");
 const { sendData } = require("./sendData");
 
 const CreatePost = async (
@@ -9,6 +10,8 @@ const CreatePost = async (
   res
 ) => {
   try {
+    const user = await UserSignUp.find({ _id: userId });
+    const following = user[0].following;
     const newPost = new collection({
       userId,
       postTitle,
@@ -23,7 +26,11 @@ const CreatePost = async (
 
     await newPost.save();
 
-    await sendData({}, collection, res);
+    await sendData(
+      { $or: [{ userId }, { userId: { $in: following } }] },
+      collection,
+      res
+    );
   } catch (error) {
     res.status(404).send({ success: false, message: "error!!!" });
   }
@@ -37,10 +44,16 @@ const AddReactionOnPost = async (
   res
 ) => {
   try {
+    const user = await UserSignUp.find({ _id: userId });
+    const following = user[0].following;
     await collection.findByIdAndUpdate(postId, {
       $push: toBeUpdatedBody,
     });
-    await sendData({}, collection, res);
+    await sendData(
+      { $or: [{ userId }, { userId: { $in: following } }] },
+      collection,
+      res
+    );
   } catch (error) {
     res.status(404).send({ success: false, message: "error!!!" });
   }
@@ -53,10 +66,16 @@ const DeleteReactionFromPost = async (
   res
 ) => {
   try {
+    const user = await UserSignUp.find({ _id: userId });
+    const following = user[0].following;
     await collection.findByIdAndUpdate(postId, {
       $pull: toBeDeletedBody,
     });
-    await sendData({}, collection, res);
+    await sendData(
+      { $or: [{ userId }, { userId: { $in: following } }] },
+      collection,
+      res
+    );
   } catch (error) {
     res.status(404).send({ success: false, message: "error" });
   }
@@ -70,6 +89,8 @@ const AddCommentOnPost = async (
   res
 ) => {
   try {
+    const user = await UserSignUp.find({ _id: userId });
+    const following = user[0].following;
     await collection.findByIdAndUpdate(postId, {
       $push: {
         comments: {
@@ -78,7 +99,11 @@ const AddCommentOnPost = async (
         },
       },
     });
-    await sendData({}, collection, res);
+    await sendData(
+      { $or: [{ userId }, { userId: { $in: following } }] },
+      collection,
+      res
+    );
   } catch (error) {
     res.status(404).send({ success: false, message: "error!!!" });
   }
@@ -92,13 +117,19 @@ const DeleteCommentFromPost = async (
   res
 ) => {
   try {
+    const user = await UserSignUp.find({ _id: userId });
+    const following = user[0].following;
     await collection.updateOne(
       { _id: postId },
       { $pull: { comments: { _id: commentId } } },
       { safe: true, multi: true }
     );
 
-    await sendData({}, collection, res);
+    await sendData(
+      { $or: [{ userId }, { userId: { $in: following } }] },
+      collection,
+      res
+    );
   } catch (error) {
     res.status(404).send({ success: false, message: "error" });
   }

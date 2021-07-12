@@ -13,7 +13,6 @@ router
 
     try {
       const result = await UserSignUp.find({ _id: userId });
-      console.log(result);
       res.status(200).json({
         success: true,
         message: "task done",
@@ -31,7 +30,7 @@ router
   .put(async (req, res) => {
     const { updateToBeUserName } = req.body;
     const { userId } = req.user;
-    
+
     await ProfileUpdate(
       userId,
       {
@@ -66,7 +65,6 @@ router.route("/users").get(async (req, res) => {
   const { userId } = req.user;
   try {
     const results = await UserSignUp.find({});
-    console.log(results);
     res.status(200).json({
       success: true,
       message: "task done",
