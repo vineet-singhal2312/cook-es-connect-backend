@@ -31,7 +31,7 @@ router
   .put(async (req, res) => {
     const { updateToBeUserName } = req.body;
     const { userId } = req.user;
-    console.log(userId, updateToBeUserName);
+    
     await ProfileUpdate(
       userId,
       {

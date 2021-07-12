@@ -24,8 +24,6 @@ const saveUser = async (
   profilePictureImageUrl,
   res
 ) => {
-  console.log(bcryptPassword, userName, email, profilePictureImageUrl);
-
   try {
     const newUser = new UserSignUp({
       userName: userName,

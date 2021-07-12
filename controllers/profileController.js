@@ -9,7 +9,7 @@ const ProfileUpdate = async (userId, updateToBeBody, collection, res) => {
       result,
     });
   } catch (error) {
-    console.log(error);
+    
     res.status(406).send({ success: false, message: "error!!!" });
   }
 };

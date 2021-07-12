@@ -68,7 +68,7 @@ router
     const { postId } = req.body;
     const { userId } = req.user;
 
-    console.log(postId, userId);
+  
     await DeleteReactionFromPost(
       userId,
       postId,

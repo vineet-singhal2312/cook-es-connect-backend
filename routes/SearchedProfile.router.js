@@ -69,7 +69,7 @@ router
         $pull: { following: searchedUserId },
       });
       const result = await UserSignUp.find({ _id: searchedUserId });
-      console.log(result);
+    
       res.status(200).json({
         success: true,
         message: "task done",
